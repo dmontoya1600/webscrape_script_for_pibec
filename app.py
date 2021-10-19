@@ -5,7 +5,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from dotenv import load_dotenv
 from lxml import html
 load_dotenv()
@@ -52,7 +52,7 @@ try:
     element = WebDriverWait(driver, 10).until(
         EC.presence_of_element_located((By.CLASS_NAME, 'RANDOM STUFF'))
     )
-except:
+except TimeoutException:
     html_selenium = driver.page_source
     doc = html.fromstring(html_selenium)
     all_lives = doc.xpath("//*[text()=' was live.']" )
@@ -60,14 +60,12 @@ except:
     first_live_path = first_live.getroottree().getpath(first_live)
     print(first_live_path)
     sibling_number = str(int(first_live_path[-21]) + 1)
-    new_path = first_live_path[:-21] + sibling_number + first_live_path[-20:]
+    new_path = first_live_path[:-21] + sibling_number + ']/div'
     print(new_path)
-    was_live = driver.find_element(By.XPATH, first_live_path )
-    print(was_live)
-    span_live = was_live.find_element(By.XPATH, '..')
-    div_1 = span_live.find_element(By.XPATH, '..')
-    div_2 = div_1.find_element(By.XPATH, '..')
-    div_3 = div_2.find_element(By.XPATH, '..')
+    three_dots = driver.find_element(By.XPATH, new_path)
+    three_dots.click()
+
+
 
 
 finally:
