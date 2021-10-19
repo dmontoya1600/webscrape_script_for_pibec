@@ -88,6 +88,18 @@ except TimeoutException:
 finally:
     print('done with 3rd wait')
 
+
+try:
+    element = WebDriverWait(driver, 2).until(
+        EC.presence_of_element_located((By.CLASS_NAME, 'RANDOM STUFF'))
+    )
+except TimeoutException:
+    iframe = driver.find_element(By.XPATH, '/html/body/div[1]/div/div[1]/div/div[4]/div/div/div[1]/div/div[2]/div/div/div/div[3]/div[2]/div[1]/label/input')
+    print(iframe.get_attribute('value'))
+finally:
+    print('done with 4th wait')
+
+
 # html_selenium = driver.page_source
 # doc = html.fromstring(html_selenium)
 # all_lives = doc.xpath("//strong[text()=' was live.']" )
