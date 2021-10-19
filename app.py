@@ -18,9 +18,10 @@ option.add_experimental_option("prefs", {
     "profile.default_content_setting_values.notifications": 2
 })
 # op.binary_location = os.environ.get('GOOGLE_CHROME_BIN')
-# # op.add_argument('--headless')
-# op.add_argument('--no-sandbox')
-# op.add_argument('--disable-dev-sh-usage')
+option.add_argument('--headless')
+option.add_argument('--no-sandbox')
+option.add_argument('--disable-dev-sh-usage')
+
 print('THIS IS THE PATH', os.environ.get('CHROME_DRIVER_PATH'))
 driver = webdriver.Chrome(chrome_options=option, executable_path=os.environ.get('CHROME_DRIVER_PATH'))
 
@@ -39,6 +40,7 @@ except:
     print('NOPE DIDNT FIND IT')
 finally:
     driver.get('https://www.facebook.com/pibelcalvario/')
+
 
 # try:
 #     element = WebDriverWait(driver, 15).until(
@@ -79,7 +81,7 @@ finally:
 
 
 try:
-    element = WebDriverWait(driver, 2).until(
+    element = WebDriverWait(driver, 3).until(
         EC.presence_of_element_located((By.CLASS_NAME, 'RANDOM STUFF'))
     )
 except TimeoutException:
@@ -90,7 +92,7 @@ finally:
 
 
 try:
-    element = WebDriverWait(driver, 2).until(
+    element = WebDriverWait(driver, 3).until(
         EC.presence_of_element_located((By.CLASS_NAME, 'RANDOM STUFF'))
     )
 except TimeoutException:
@@ -99,7 +101,7 @@ except TimeoutException:
 finally:
     print('done with 4th wait')
 
-
+driver.quit()
 # html_selenium = driver.page_source
 # doc = html.fromstring(html_selenium)
 # all_lives = doc.xpath("//strong[text()=' was live.']" )
