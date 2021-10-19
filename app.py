@@ -10,13 +10,19 @@ from dotenv import load_dotenv
 from lxml import html
 load_dotenv()
 
-# op = webdriver.ChromeOptions()
+option = webdriver.ChromeOptions()
+option.add_argument("--disable-infobars")
+option.add_argument("start-maximized")
+option.add_argument("--disable-extensions")
+option.add_experimental_option("prefs", {
+    "profile.default_content_setting_values.notifications": 2
+})
 # op.binary_location = os.environ.get('GOOGLE_CHROME_BIN')
 # # op.add_argument('--headless')
 # op.add_argument('--no-sandbox')
 # op.add_argument('--disable-dev-sh-usage')
 print('THIS IS THE PATH', os.environ.get('CHROME_DRIVER_PATH'))
-driver = webdriver.Chrome(os.environ.get('CHROME_DRIVER_PATH'))
+driver = webdriver.Chrome(chrome_options=option, executable_path=os.environ.get('CHROME_DRIVER_PATH'))
 
 driver.get('https://www.facebook.com/')
 email = driver.find_element(By.NAME, 'email')
@@ -49,7 +55,7 @@ finally:
 # child = driver.find_element_by_xpath("//*[contains(text(), ' was live.')]")
 # try:
 try:
-    element = WebDriverWait(driver, 10).until(
+    element = WebDriverWait(driver, 6).until(
         EC.presence_of_element_located((By.CLASS_NAME, 'RANDOM STUFF'))
     )
 except TimeoutException:
@@ -70,6 +76,17 @@ except TimeoutException:
 
 finally:
     print('DONE WITH SECOND WAIT')
+
+
+try:
+    element = WebDriverWait(driver, 2).until(
+        EC.presence_of_element_located((By.CLASS_NAME, 'RANDOM STUFF'))
+    )
+except TimeoutException:
+    embed = driver.find_element(By.XPATH, '/html/body/div[1]/div/div[1]/div/div[3]/div/div/div[2]/div/div/div[1]/div[1]/div/div/div[1]/div/div/div/div[1]/div/div[4]')
+    embed.click()
+finally:
+    print('done with 3rd wait')
 
 # html_selenium = driver.page_source
 # doc = html.fromstring(html_selenium)
