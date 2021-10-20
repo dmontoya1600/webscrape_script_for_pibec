@@ -8,7 +8,11 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from dotenv import load_dotenv
 from lxml import html
+import requests
 load_dotenv()
+message_request = os.environ.get('PYTHON_SCRIPT_KEY')
+hidden_route = os.environ.get('HIDDEN_ROUTE')
+embed_iframe = ''
 
 option = webdriver.ChromeOptions()
 option.add_argument("--disable-infobars")
@@ -98,10 +102,13 @@ try:
 except TimeoutException:
     iframe = driver.find_element(By.XPATH, '/html/body/div[1]/div/div[1]/div/div[4]/div/div/div[1]/div/div[2]/div/div/div/div[3]/div[2]/div[1]/label/input')
     print(iframe.get_attribute('value'))
+    embed_iframe = str(iframe.get_attribute('value'))
 finally:
     print('done with 4th wait')
 
 driver.quit()
+
+requests.post(f'http://localhost:5000{hidden_route}/update', json={'message_request': message_request, 'iframe': embed_iframe})
 # html_selenium = driver.page_source
 # doc = html.fromstring(html_selenium)
 # all_lives = doc.xpath("//strong[text()=' was live.']" )
