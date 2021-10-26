@@ -21,13 +21,14 @@ option.add_argument("--disable-extensions")
 option.add_experimental_option("prefs", {
     "profile.default_content_setting_values.notifications": 2
 })
-# op.binary_location = os.environ.get('GOOGLE_CHROME_BIN')
+# GOOGLE CHROME BIN IS ONLY NEEDED FOR HEROKU
+# option.binary_location = os.environ.get('GOOGLE_CHROME_BIN')
 option.add_argument('--headless')
 option.add_argument('--no-sandbox')
 option.add_argument('--disable-dev-sh-usage')
 
-print('THIS IS THE PATH', os.environ.get('CHROME_DRIVER_PATH'))
-driver = webdriver.Chrome(chrome_options=option, executable_path=os.environ.get('CHROME_DRIVER_PATH'))
+print('THIS IS THE PATH', os.environ.get('CHROMEDRIVER_PATH'))
+driver = webdriver.Chrome(chrome_options=option, executable_path=os.environ.get('CHROMEDRIVER_PATH'))
 
 driver.get('https://www.facebook.com/')
 email = driver.find_element(By.NAME, 'email')
@@ -37,7 +38,7 @@ password.send_keys(os.environ.get('PASSWORD'))
 
 password.send_keys(Keys.RETURN)
 try:
-    element = WebDriverWait(driver, 7).until(
+    element = WebDriverWait(driver, 8).until(
         EC.presence_of_element_located((By.CLASS_NAME, 'RANDOM STUFF'))
     )
 except:
@@ -61,13 +62,17 @@ finally:
 # child = driver.find_element_by_xpath("//*[contains(text(), ' was live.')]")
 # try:
 try:
-    element = WebDriverWait(driver, 6).until(
+    element = WebDriverWait(driver, 7).until(
         EC.presence_of_element_located((By.CLASS_NAME, 'RANDOM STUFF'))
     )
 except TimeoutException:
+    print('WORKING ON FINDING LIVE POST')
     html_selenium = driver.page_source
     doc = html.fromstring(html_selenium)
-    all_lives = doc.xpath("//*[text()=' was live.']" )
+    all_lives = doc.xpath("//*[text()=' is live now.']" )
+    # NEED TO CREATE FUNCTION THAT DETECTS THE TIME OF DAY AND SENDS THE "WAS LIVE"
+
+    # all_lives = doc.xpath("//*[text()=' was live.']" )
     first_live = all_lives[0]
     first_live_path = first_live.getroottree().getpath(first_live)
     print(first_live_path)
@@ -85,10 +90,11 @@ finally:
 
 
 try:
-    element = WebDriverWait(driver, 3).until(
+    element = WebDriverWait(driver, 4).until(
         EC.presence_of_element_located((By.CLASS_NAME, 'RANDOM STUFF'))
     )
 except TimeoutException:
+    print('CLICKING ON EMBED MENU')
     embed = driver.find_element(By.XPATH, '/html/body/div[1]/div/div[1]/div/div[3]/div/div/div[2]/div/div/div[1]/div[1]/div/div/div[1]/div/div/div/div[1]/div/div[4]')
     embed.click()
 finally:
@@ -96,10 +102,11 @@ finally:
 
 
 try:
-    element = WebDriverWait(driver, 3).until(
+    element = WebDriverWait(driver, 4).until(
         EC.presence_of_element_located((By.CLASS_NAME, 'RANDOM STUFF'))
     )
 except TimeoutException:
+    print('OBTAINING iFRAME VALUE TO SEND TO BACKEND SERVER')
     iframe = driver.find_element(By.XPATH, '/html/body/div[1]/div/div[1]/div/div[4]/div/div/div[1]/div/div[2]/div/div/div/div[3]/div[2]/div[1]/label/input')
     print(iframe.get_attribute('value'))
     embed_iframe = str(iframe.get_attribute('value'))
