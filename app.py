@@ -27,8 +27,8 @@ option.add_argument('--headless')
 option.add_argument('--no-sandbox')
 option.add_argument('--disable-dev-sh-usage')
 
-print('THIS IS THE PATH', os.environ.get('CHROMEDRIVER_PATH'))
-driver = webdriver.Chrome(chrome_options=option, executable_path=os.environ.get('CHROMEDRIVER_PATH'))
+print('THIS IS THE PATH', os.environ.get('CHROME_DRIVER_PATH'))
+driver = webdriver.Chrome(chrome_options=option, executable_path=os.environ.get('CHROME_DRIVER_PATH'))
 
 driver.get('https://www.facebook.com/')
 email = driver.find_element(By.NAME, 'email')
@@ -62,17 +62,17 @@ finally:
 # child = driver.find_element_by_xpath("//*[contains(text(), ' was live.')]")
 # try:
 try:
-    element = WebDriverWait(driver, 7).until(
+    element = WebDriverWait(driver, 8).until(
         EC.presence_of_element_located((By.CLASS_NAME, 'RANDOM STUFF'))
     )
 except TimeoutException:
     print('WORKING ON FINDING LIVE POST')
     html_selenium = driver.page_source
     doc = html.fromstring(html_selenium)
-    all_lives = doc.xpath("//*[text()=' is live now.']" )
+    # all_lives = doc.xpath("//*[text()=' is live now.']" )
     # NEED TO CREATE FUNCTION THAT DETECTS THE TIME OF DAY AND SENDS THE "WAS LIVE"
 
-    # all_lives = doc.xpath("//*[text()=' was live.']" )
+    all_lives = doc.xpath("//*[text()=' was live.']" )
     first_live = all_lives[0]
     first_live_path = first_live.getroottree().getpath(first_live)
     print(first_live_path)
@@ -115,7 +115,8 @@ finally:
 
 driver.quit()
 
-requests.post(f'http://localhost:5000{hidden_route}/update', json={'message_request': message_request, 'iframe': embed_iframe})
+post_value = requests.post(f'https://pibec-website.herokuapp.com{hidden_route}/update', json={'message_request': message_request, 'iframe': embed_iframe})
+print(post_value.text)
 # html_selenium = driver.page_source
 # doc = html.fromstring(html_selenium)
 # all_lives = doc.xpath("//strong[text()=' was live.']" )
