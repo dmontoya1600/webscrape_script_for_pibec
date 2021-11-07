@@ -22,7 +22,7 @@ option.add_experimental_option("prefs", {
     "profile.default_content_setting_values.notifications": 2
 })
 # GOOGLE CHROME BIN IS ONLY NEEDED FOR HEROKU
-# option.binary_location = os.environ.get('GOOGLE_CHROME_BIN')
+option.binary_location = os.environ.get('GOOGLE_CHROME_BIN')
 option.add_argument('--headless')
 option.add_argument('--no-sandbox')
 option.add_argument('--disable-dev-sh-usage')
