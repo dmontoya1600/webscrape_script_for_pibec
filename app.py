@@ -115,7 +115,9 @@ finally:
 
 driver.quit()
 
-post_value = requests.post(f'https://pibec-website.herokuapp.com{hidden_route}/update', json={'message_request': message_request, 'iframe': embed_iframe})
+# post_value = requests.post(f'https://pibec-website.herokuapp.com{hidden_route}/update', json={'message_request': message_request, 'iframe': embed_iframe})
+post_value = requests.post(f'http://localhost:3000{hidden_route}/update', json={'message_request': message_request, 'iframe': embed_iframe})
+
 print(post_value.text)
 # FINAL TEST FOR GITIGNORE
 # html_selenium = driver.page_source
