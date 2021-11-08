@@ -31,6 +31,12 @@ print('THIS IS THE PATH', os.environ.get('CHROME_DRIVER_PATH'))
 driver = webdriver.Chrome(chrome_options=option, executable_path=os.environ.get('CHROME_DRIVER_PATH'))
 
 driver.get('https://www.facebook.com/')
+try:
+    myElemWait1 = WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.ID,'email')))
+    print('DONE LOADING')
+except TimeoutException:
+    print('LOADING IS TAKING TOO LONG')
+
 email = driver.find_element(By.NAME, 'email')
 email.send_keys(os.environ.get('EMAIL'))
 password = driver.find_element(By.NAME, 'pass')
@@ -47,20 +53,6 @@ finally:
     driver.get('https://www.facebook.com/pibelcalvario/')
 
 
-# try:
-#     element = WebDriverWait(driver, 15).until(
-#         EC.presence_of_all_elements_located((By.CLASS_NAME, 'bi6gxh9e aov4n071'))
-#     )
-# finally:
-#     print('HIT THIS LINE')
-#     try:
-#         driver.find_elements_by_xpath("//*[contains(text(), ' was live.')]")
-#         print('FOUND ELEMENT')
-#     except NoSuchElementException:
-#         print('ELEMENT DOES NOT EXISTS')
-
-# child = driver.find_element_by_xpath("//*[contains(text(), ' was live.')]")
-# try:
 try:
     element = WebDriverWait(driver, 8).until(
         EC.presence_of_element_located((By.CLASS_NAME, 'RANDOM STUFF'))
@@ -115,39 +107,11 @@ finally:
 
 driver.quit()
 
+############# FOR PRODUCTION ##############
+
 post_value = requests.post(f'https://pibec-website.herokuapp.com{hidden_route}/update', json={'message_request': message_request, 'iframe': embed_iframe})
+
+############# FOR DEV TESTING ##############
 # post_value = requests.post(f'http://localhost:3000{hidden_route}/update', json={'message_request': message_request, 'iframe': embed_iframe})
 
 print(post_value.text)
-# FINAL TEST FOR GITIGNORE
-# html_selenium = driver.page_source
-# doc = html.fromstring(html_selenium)
-# all_lives = doc.xpath("//strong[text()=' was live.']" )
-# print(all_lives)
-# first_live = all_lives[0]
-# print(first_live.getroottree().getpath(first_live))
-
-# was_live = driver.find_element(By.XPATH, "//h2[text()=' was live.']" )
-# print(was_live)
-# h2_live = was_live.find_element_by_xpath('..')
-# h2_live_path = h2_live.get_attribute('d')
-# print(h2_live_path)
-
-# span_live = h2_live.find_element_by_xpath('..')
-# div1_live = span_live.find_element_by_xpath('..')
-# div2_live = div1_live.find_element_by_xpath('..')
-# div3_live = div2_live.find_element_by_xpath('..')
-# div3_live_path = div3_live.getroottree().getpath(div3_live)
-# print(div3_live_path)
-    # sibling_div = div3_live.find_element_by_xpath('..')
-    # sibling_div.click()
-    # tag_value = was_live.text
-    # print(tag_value)
-    # print(was_live)
-# except NoSuchElementException:
-# except :
-#     print('ELEMENT DOES NOT EXISTS')
-# finally:
-#     print('FOUND ELEMENT')
-
-# ON HEROKU
