@@ -61,10 +61,10 @@ except TimeoutException:
     print('WORKING ON FINDING LIVE POST')
     html_selenium = driver.page_source
     doc = html.fromstring(html_selenium)
-    # all_lives = doc.xpath("//*[text()=' is live now.']" )
+    all_lives = doc.xpath("//*[text()=' is live now.']" )
     # NEED TO CREATE FUNCTION THAT DETECTS THE TIME OF DAY AND SENDS THE "WAS LIVE"
 
-    all_lives = doc.xpath("//*[text()=' was live.']" )
+    # all_lives = doc.xpath("//*[text()=' was live.']" )
     first_live = all_lives[0]
     first_live_path = first_live.getroottree().getpath(first_live)
     print(first_live_path)
