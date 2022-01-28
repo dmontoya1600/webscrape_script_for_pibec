@@ -67,9 +67,10 @@ except TimeoutException:
     # all_lives = doc.xpath("//*[text()=' was live.']" )
     first_live = all_lives[0]
     first_live_path = first_live.getroottree().getpath(first_live)
-    print(first_live_path)
-    sibling_number = str(int(first_live_path[-21]) + 1)
-    new_path = first_live_path[:-21] + sibling_number + ']/div'
+    print('FIRST LIVE PATH:', first_live_path)
+    sibling_number = str(int(first_live_path[-26]) + 1)
+
+    new_path = first_live_path[:-26] + sibling_number + ']/div'
     print(new_path)
     three_dots = driver.find_element(By.XPATH, new_path)
     three_dots.click()
@@ -115,3 +116,10 @@ post_value = requests.post(f'https://pibec-website.herokuapp.com{hidden_route}/u
 # post_value = requests.post(f'http://localhost:3000{hidden_route}/update', json={'message_request': message_request, 'iframe': embed_iframe})
 
 print(post_value.text)
+
+# Next step:
+# Need to make sure it gets tried multiple times. once it is succesful, then it will stop the loop.
+# otherwise it will try a number of times
+# this is to fix the issue of not finding a live postat 11:30 and then just failing without trying again.
+
+# this will need to run every 2 minutes.
